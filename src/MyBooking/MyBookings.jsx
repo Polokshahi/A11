@@ -16,7 +16,7 @@ const MyBookings = () => {
     fetch(`https://assignment11-server-side-nine.vercel.app/bookings/cancel/${bookingId}`, {
       method: 'DELETE',
     })
-      .then(res => res.json())
+      .then(res => res.json()) 
       .then(data => {
         if (data.message === 'Booking canceled successfully') {
           setBookings(prevBookings => prevBookings.filter(booking => booking._id !== bookingId));
