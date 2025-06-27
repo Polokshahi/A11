@@ -1,32 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
-import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  console.log(user);
+
+
+  const email = user?.email;
+  const photoURL = user?.photoURL;
+  const displayName = user?.displayName;
   const navigate = useNavigate();
 
-  const links = (
-    <>
-      <li><NavLink to="/" className="text-white hover:text-gray-300">Home</NavLink></li>
-      <li><NavLink to="/rooms" className="text-white hover:text-gray-300">Rooms</NavLink></li>
-      <li><NavLink to="/bookings" className="text-white hover:text-gray-300">My Bookings</NavLink></li>
-    </>
-  );
+  const alreadyUser = user?.email;
 
-  const handleLogout = async () => {
-    await logOut();
-    setIsLoggedOut(true);
-    navigate('/login');
+  const handleLogout = () => {
+    logOut().then(() => {
+      navigate("/login");
+    });
   };
-
-  useEffect(() => {
-    if (user) {
-      setIsLoggedOut(false);
-    }
-  }, [user]);
-
 
   return (
     <div className="navbar bg-[#262626] text-white shadow-lg rounded-xl mt-2">
@@ -50,42 +42,70 @@ const NavBar = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu z-30 menu-sm dropdown-content bg-[#262626] rounded-box  mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-[#262626] rounded-box mt-3 w-52 p-2 shadow"
           >
-            {links}
+            <li><NavLink to="/" className="text-white hover:text-gray-300">Home</NavLink></li>
+            <li><NavLink to="/rooms" className="text-white hover:text-gray-300">Rooms</NavLink></li>
+            <li><NavLink to="/bookings" className="text-white hover:text-gray-300">My Bookings</NavLink></li>
           </ul>
         </div>
-        <Link to={'/'} className="btn btn-ghost text-xl font-extrabold text-white">Hotel 11</Link>
+        <Link to="/" className="btn btn-ghost text-xl font-extrabold text-white">
+          Hotel 11
+        </Link>
       </div>
+
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{links}</ul>
+        <ul className="menu menu-horizontal px-1">
+          <li><NavLink to="/" className="text-white hover:text-gray-300">Home</NavLink></li>
+          <li><NavLink to="/rooms" className="text-white hover:text-gray-300">Rooms</NavLink></li>
+          <li><NavLink to="/bookings" className="text-white hover:text-gray-300">My Bookings</NavLink></li>
+        </ul>
       </div>
-      <div className="navbar-end px-2 gap-6">
-        {user && user.email ? (
-          <div className="w-11 rounded-full overflow-hidden">
-            <img alt="User Avatar" src={user?.photoURL} />
-          </div>
+
+      <div className="navbar-end px-2 gap-4">
+
+        {/* user image set */}
+
+
+        
+
+      <div className=" border-2 rounded-full w-[40px] h-[40px]">
+            <img
+              src={photoURL || "https://i.ibb.co/2kRj5R0/default-avatar.png"}
+              alt={displayName || "User"}
+              className="w-full h-full object-cover rounded-full"
+            />
+          </div> 
+       
+
+
+
+        
+
+
+
+        {alreadyUser ? (
+          <>
+            <button
+              onClick={handleLogout}
+              className="btn bg-green-500 hover:bg-green-600 text-white"
+            >
+              LogOut
+            </button>
+          </>
         ) : (
-          ''
-        )}
-        {user && user.email ? (
-          <button
-            onClick={handleLogout}
-            className="btn bg-red-500 hover:bg-red-600 text-white"
-          >
-            LogOut
-          </button>
-        ) : (
-          !isLoggedOut && (
-            <>
+          <>
+            <NavLink to="/login">
               <button className="btn bg-green-500 hover:bg-green-600 text-white">
-                <NavLink to="/login">Login</NavLink>
+                Login
               </button>
+            </NavLink>
+            <NavLink to="/register">
               <button className="btn bg-blue-500 hover:bg-blue-600 text-white">
-                <NavLink to="/register">Register</NavLink>
+                Register
               </button>
-            </>
-          )
+            </NavLink>
+          </>
         )}
       </div>
     </div>
