@@ -1,12 +1,30 @@
-# React + Vite
+# 🏨 Hotel Booking Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-featured hotel management application that allows users to book rooms, manage reservations, and perform administrative tasks such as room inventory, cancellations, and customer management.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ User registration & login (authentication)
+- ✅ Book rooms by selecting check-in/check-out dates
+- ✅ Cancel and update existing bookings
+- ✅ View booking history
+- ✅ Responsive UI for mobile and desktop
+- ✅ Real-time room availability check
+- ✅ Payment gateway integration (optional)
+- ✅ Email notifications for booking confirmations & cancellations
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React.js / Tailwind CSS
+- **Backend:** Node.js / Express.js
+- **Database:** MongoDB / Firebase 
+- **Authentication:**  Firebase Auth
+- **Deployment:** Vercel / Netlify 
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/yourusername/hotel-booking-app.git
+cd hotel-booking-app
+npm install
+npm start
