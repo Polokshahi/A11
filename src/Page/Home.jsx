@@ -1,5 +1,6 @@
-import FirstComponent from "../Component/My_Component/FirstComponent";
-import SecondComponent from "../Component/My_Component/SecondComponent";
+
+import FirstComponent from "../My_Component/FirstComponent";
+import SecondComponent from "../My_Component/SecondComponent";
 import Heading from "./Heading";
 import Slider from "./Slider";
 
