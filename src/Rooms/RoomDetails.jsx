@@ -35,7 +35,7 @@ const RoomDetails = () => {
   } = useQuery({
     queryKey: ["rooms"],
     queryFn: async () => {
-      const res = await axios.get(`https://assignment11-server-side-nine.vercel.app/rooms/${id}`);
+      const res = await axios.get(`http://localhost:5000/rooms/${id}`);
       return res.data;
     },
   });
@@ -62,7 +62,7 @@ const RoomDetails = () => {
   } = useQuery({
     queryKey: ["bookedDates", id],
     queryFn: async () => {
-      const res = await axios.get(`https://assignment11-server-side-nine.vercel.app/bookings/${id}`);
+      const res = await axios.get(`http://localhost:5000/bookings/${id}`);
       return res.data;
     },
   });
@@ -136,7 +136,7 @@ const RoomDetails = () => {
     };
 
     axios
-      .post("https://assignment11-server-side-nine.vercel.app/bookings", bookingData)
+      .post("http://localhost:5000/bookings", bookingData)
       .then(() => {
         Swal.fire("Success!", "Successfully Booked Room", "success");
         navigate("/rooms");
@@ -150,7 +150,7 @@ const RoomDetails = () => {
     if (user) {
       document.getElementById("my_modal_5").showModal();
     } else {
-      navigate("/auth/login", { state: location.pathname });
+      navigate("/login", { state: location.pathname });
     }
   };
 

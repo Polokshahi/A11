@@ -19,7 +19,7 @@ const Rooms = () => {
     } = useQuery({
         queryKey: ["rooms"],
         queryFn: async () => {
-            const res = await axios.get("https://assignment11-server-side-nine.vercel.app/rooms");
+            const res = await axios.get("http://localhost:5000/rooms");
             return res.data;
         },
     });
@@ -119,3 +119,15 @@ const Rooms = () => {
 };
 
 export default Rooms;
+
+
+
+
+
+
+
+
+
+
+
+
