@@ -142,7 +142,7 @@ const RoomDetails = () => {
         navigate("/rooms");
       })
       .catch((error) => {
-        Swal.fire("Error!", `${error}`, "error");
+        Swal.fire("Error!", `${error}`, "error"); 
       });
   };
 
