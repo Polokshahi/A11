@@ -4,7 +4,7 @@ import Footer from "../Page/Shared/Footer";
 
 const MainLayOut = () => {
     return (
-         <div className="flex flex-col min-h-screen max-w-7xl mx-auto">
+         <div className="flex flex-col min-h-screen  mx-auto">
             {/* NavBar - header at the top */}
             <NavBar />
 

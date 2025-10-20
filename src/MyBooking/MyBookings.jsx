@@ -3,14 +3,24 @@ import BookingCard from "./BookingCard";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const MyBookings = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
 
+  // Show DaisyUI spinner while auth/loading
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <button className="btn btn-square loading"></button>
+      </div>
+    );
+  }
+
   useEffect(() => {
+    if (!user?.email) return;
     fetch(`https://assignment11-server-side-nine.vercel.app/bookings?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => setBookings(data));
-  }, [user.email]);
+  }, [user?.email]);
 
   const handleCancelBooking = (bookingId) => {
     fetch(`https://assignment11-server-side-nine.vercel.app/bookings/cancel/${bookingId}`, {
@@ -24,20 +34,14 @@ const MyBookings = () => {
           );
         }
       })
-      .catch((error) => {
-        console.error("Error canceling booking:", error);
-      });
+      .catch((error) => console.error("Error canceling booking:", error));
   };
 
   const handleUpdateDate = (bookingId, newEndDate) => {
     fetch(`https://assignment11-server-side-nine.vercel.app/bookings/update-end-date/${bookingId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        endDate: newEndDate.toISOString(),
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ endDate: newEndDate.toISOString() }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -51,17 +55,12 @@ const MyBookings = () => {
           );
         }
       })
-      .catch((error) => {
-        console.error("Error updating booking date:", error);
-      });
+      .catch((error) => console.error("Error updating booking date:", error));
   };
 
   const formatDate = (date) => {
     const parsedDate = new Date(date);
-    if (isNaN(parsedDate)) {
-      return "";
-    }
-    return parsedDate.toLocaleDateString("en-GB");
+    return isNaN(parsedDate) ? "" : parsedDate.toLocaleDateString("en-GB");
   };
 
   return (
