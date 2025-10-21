@@ -11,56 +11,97 @@ import { auth } from "../Firebase.init";
 
 export const AuthContext = createContext();
 
-const Provider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // <-- loading state
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Optional error state
   const provider = new GoogleAuthProvider();
 
-  // user signUp
-  const signUp = (email, password) => {
+  // User signUp
+  const signUp = async (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password)
-      .finally(() => setLoading(false));
+    setError(null);
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      setUser(result.user);
+      return result.user;
+    } catch (err) {
+      console.error("SignUp Error:", err.message);
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // signIn 
-  const signIn = (email, password) => {
+  // Email/password signIn
+  const signIn = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-      .finally(() => setLoading(false));
+    setError(null);
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      setUser(result.user);
+      return result.user;
+    } catch (err) {
+      console.error("SignIn Error:", err.message);
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // google signIn
-  const googleSignIn = () => {
+  // Google signIn
+  const googleSignIn = async () => {
     setLoading(true);
-    return signInWithPopup(auth, provider)
-      .finally(() => setLoading(false));
+    setError(null);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user); // Immediately update user state
+      return result.user;
+    } catch (err) {
+      console.error("Google SignIn Error:", err.message);
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // observer
+  // LogOut
+  const logOut = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (err) {
+      console.error("Logout Error:", err.message);
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Observer for auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false); // stop loading once Firebase finishes checking
+      setLoading(false); // Stop loading once Firebase finishes checking
     });
 
     return () => unsubscribe();
   }, []);
 
-  // logOut
-  const logOut = () => {
-    setLoading(true);
-    return signOut(auth)
-      .finally(() => setLoading(false));
-  };
-
   const authInfo = {
     user,
-    loading, // <-- expose loading state
+    loading,
+    error,
     signUp,
     signIn,
-    logOut,
-    googleSignIn
+    googleSignIn,
+    logOut
   };
 
   return (
@@ -70,4 +111,4 @@ const Provider = ({ children }) => {
   );
 };
 
-export default Provider;
+export default AuthProvider;
